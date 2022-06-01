@@ -8,7 +8,7 @@ with open('config.json') as config_file:
     url = data['url']
     version_info = data['version']
 
-def all_items(lang='em'):
+def all_items(lang='en'):
     headers = {'language': lang, 'accept': 'application/json'}
     r = requests.get(url, headers=headers)
     res = r.json()['payload']['items']
@@ -33,11 +33,10 @@ def info_items(item, lang='en'):
     res = r.json()["payload"]["item"]["items_in_set"]
     for i in res:
         item_info = i[lang]
-        print(item_info)
     return item_info
 
-def best_price(item, user_ingame_status=True):
-    item_url = check_items(item)
+def best_price(item, user_ingame_status=True, lang='en'):
+    item_url = check_items(item, lang)
     headers = {'platform' : 'pc'}
     r = requests.get(url+"/"+item_url+"/orders", headers=headers)
     res = r.json()["payload"]["orders"]
@@ -57,8 +56,8 @@ def best_price(item, user_ingame_status=True):
     platinum = orders.get(k)
     return {k : platinum}
     
-def best_sell(item, user_ingame_status=True):
-    item_url = check_items(item)
+def best_sell(item, user_ingame_status=True, lang='en'):
+    item_url = check_items(item, lang)
     headers = {'platform' : 'pc'}
     r = requests.get(url+"/"+item_url+"/orders", headers=headers)
     res = r.json()["payload"]["orders"]
